@@ -7,26 +7,25 @@ from datetime import date
 
 app = Flask(__name__)
 
-
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///jobfinder.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 
 db.init_app(app)
 migrate = Migrate(app, db)
 CORS(app)
 api = Api(app)
 
-#company
+
+# Company Resource
 class CompanyResource(Resource):
     def get(self, company_id=None):
         if company_id:
-            company = Company.query.get_or_404(company_id)  
-            return make_response(jsonify(company.serialize()), 200)  
+            company = Company.query.get_or_404(company_id)
+            return make_response(jsonify(company.serialize()), 200)
         else:
-            companies = Company.query.all()  
-            companies_data = [company.serialize() for company in companies] 
-            return make_response(jsonify(companies_data), 200)  
+            companies = Company.query.all()
+            companies_data = [company.serialize() for company in companies]
+            return make_response(jsonify(companies_data), 200)
 
     def post(self):
         data = request.get_json()
@@ -54,25 +53,24 @@ class CompanyResource(Resource):
         db.session.commit()
         return make_response(jsonify({"message": "Company deleted"}), 200)
 
-# job
 
+# Job Resource
 class JobResource(Resource):
     def get(self, job_id=None):
         if job_id:
-            job = Job.query.get_or_404(job_id)  
-            return make_response(jsonify(job.serialize()), 200)  
+            job = Job.query.get_or_404(job_id)
+            return make_response(jsonify(job.serialize()), 200)
         else:
-            jobs = Job.query.all() 
-            jobs_data = [job.serialize() for job in jobs] 
-            return make_response(jsonify(jobs_data), 200)  
+            jobs = Job.query.all()
+            jobs_data = [job.serialize() for job in jobs]
+            return make_response(jsonify(jobs_data), 200)
 
     def post(self):
         data = request.get_json()
         new_job = Job(
             title=data['title'],
             description=data['description'],
-            company_id=data['company_id'],
-            posted_date=date.today()
+            company_id=data['company_id']
         )
         db.session.add(new_job)
         db.session.commit()
@@ -84,7 +82,6 @@ class JobResource(Resource):
         job.title = data.get('title', job.title)
         job.description = data.get('description', job.description)
         job.company_id = data.get('company_id', job.company_id)
-        job.posted_date = data.get('posted_date', job.posted_date)
         db.session.commit()
         return make_response(jsonify({"message": "Job updated"}), 200)
 
@@ -94,22 +91,22 @@ class JobResource(Resource):
         db.session.commit()
         return make_response(jsonify({"message": "Job deleted"}), 200)
 
-# user
 
+# User Resource
 class UserResource(Resource):
     def get(self, user_id=None):
         if user_id:
-            user = User.query.get_or_404(user_id)  
-            return make_response(jsonify(user.serialize()), 200)  
+            user = User.query.get_or_404(user_id)
+            return make_response(jsonify(user.serialize()), 200)
         else:
-            users = User.query.all() 
-            users_data = [user.serialize() for user in users] 
-            return make_response(jsonify(users_data), 200)  
+            users = User.query.all()
+            users_data = [user.serialize() for user in users]
+            return make_response(jsonify(users_data), 200)
 
     def post(self):
         data = request.get_json()
         new_user = User(
-            name=data['name'],
+            username=data['username'],  # Changed from 'name' to 'username'
             email=data['email']
         )
         db.session.add(new_user)
@@ -119,7 +116,7 @@ class UserResource(Resource):
     def patch(self, user_id):
         data = request.get_json()
         user = User.query.get_or_404(user_id)
-        user.name = data.get('name', user.name)
+        user.username = data.get('username', user.username)
         user.email = data.get('email', user.email)
         db.session.commit()
         return make_response(jsonify({"message": "User updated"}), 200)
@@ -130,27 +127,26 @@ class UserResource(Resource):
         db.session.commit()
         return make_response(jsonify({"message": "User deleted"}), 200)
 
-# job application
 
+# Job Application Resource
 class JobApplicationResource(Resource):
     def get(self, user_id=None, job_id=None):
         if user_id and job_id:
             application = JobApplicationJoin.query.filter_by(user_id=user_id, job_id=job_id).first()
             if application:
-                return make_response(jsonify({"user_id": application.user_id, "job_id": application.job_id, "application_date": application.application_date}), 200)
+                return make_response(jsonify(application.serialize()), 200)
             else:
                 return make_response(jsonify({"error": "Application not found"}), 404)
         else:
             applications = JobApplicationJoin.query.all()
-            applications_data = [{"user_id": app.user_id, "job_id": app.job_id, "application_date": app.application_date} for app in applications]
+            applications_data = [app.serialize() for app in applications]
             return make_response(jsonify(applications_data), 200)
 
     def post(self):
         data = request.get_json()
         new_application = JobApplicationJoin(
             user_id=data['user_id'],
-            job_id=data['job_id'],
-            application_date=date.today()
+            job_id=data['job_id']
         )
         db.session.add(new_application)
         db.session.commit()
@@ -164,11 +160,12 @@ class JobApplicationResource(Resource):
         db.session.commit()
         return make_response(jsonify({"message": "Job application deleted"}), 200)
 
-# Home Route
 
+# Home Route
 class HomeResource(Resource):
     def get(self):
         return make_response("Welcome to JobFinder API!", 200)
+
 
 # Add Resources to the API
 api.add_resource(HomeResource, '/')
@@ -177,8 +174,9 @@ api.add_resource(JobResource, '/jobs', '/jobs/<int:job_id>')
 api.add_resource(UserResource, '/users', '/users/<int:user_id>')
 api.add_resource(JobApplicationResource, '/applications', '/applications/<int:user_id>/<int:job_id>')
 
+
 # Run the app
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all() 
+        db.create_all()
     app.run(debug=True)
