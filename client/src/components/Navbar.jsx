@@ -20,12 +20,11 @@ function Navbar({ onSearch }) {
 
   return (
     <>
-      {/* Set Body Background Color */}
+      
       <style>{`body { background-color: whitesmoke; }`}</style>
 
-      {/* Navbar */}
+     
       <nav className="flex justify-between items-center px-8 py-4 bg-white fixed top-0 w-full z-50 h-[12vh] shadow-md">
-        {/* Left: Navigation Links */}
         <div className="navbar-left">
           <ul className="flex list-none p-0 m-0">
             <li className="mr-6">
@@ -46,7 +45,6 @@ function Navbar({ onSearch }) {
           </ul>
         </div>
 
-        {/* Right: Search Bar */}
         <div className="navbar-right ml-auto flex items-center">
           <div className="flex items-center gap-8">
             <input
@@ -59,7 +57,7 @@ function Navbar({ onSearch }) {
             />
             <button
               type="button"
-              className="px-4 py-2 bg-green-600 text-white rounded-r-md font-bold transition-all duration-300 hover:bg-green-400"
+              className="px-4 py-2 bg-green-600 text-white rounded-r-md font-bold transition-all duration-300 hover:bg-green-800"
               onClick={handleSearchClick}
             >
               Search
