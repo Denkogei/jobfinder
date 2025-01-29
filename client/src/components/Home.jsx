@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function Home() {
   const [jobs, setJobs] = useState([]);  
   const [loading, setLoading] = useState(true);  
   const [error, setError] = useState(null);  
+  const navigate = useNavigate();
 
  
   useEffect(() => {
@@ -32,7 +34,9 @@ function Home() {
   if (error) {
     return <div>Error: {error}</div>;
   }
-
+  const handleApplyClick = (jobId) => {
+    navigate(`/job/${jobId}`);  
+  };
   return (
     <div className="container p-4 mx-auto h-screen">
     <h1 className="text-center text-2xl font-bold mb-6">Job Finder</h1>
@@ -57,9 +61,12 @@ function Home() {
               <p className="text-gray-500 mb-4 flex-1">{job.description}</p>
 
               <div className="mt-auto">
-                <button className="bg-green-600 text-white py-3 px-6 rounded-md transition duration-300 hover:bg-green-800 w-full">
-                  Apply Now
-                </button>
+              <button
+                className="bg-green-600 text-white py-2 px-4 rounded-md transition duration-300 hover:bg-green-400"
+                onClick={() => handleApplyClick(job.id)}  
+              >
+                Apply Now
+              </button>
               </div>
             </div>
           ))

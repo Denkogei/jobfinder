@@ -4,24 +4,26 @@ import Navbar from '../components/Navbar';
 import About from '../components/About';
 import Addjob from '../components/Addjob';
 import Home from '../components/Home';
+import JobDetails from './JobDetails';
 
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Handle search term change
+  
   const handleSearch = (term) => {
-    setSearchTerm(term.toLowerCase());  // Update the search term
+    setSearchTerm(term.toLowerCase());  
   };
 
   return (
     <Router>
-          <div className="pt-[13vh]"> {/* Same as navbar height (12vh) */}
+          <div className="pt-[13vh]"> 
         <Navbar onSearch={handleSearch} />
         <Routes>
           <Route path="/" element={<Home searchTerm={searchTerm} />} />
           <Route path="/add-job" element={<Addjob />} />
           <Route path="/about" element={<About />} />
+          <Route path="/job/:id" element={<JobDetails />} /> 
         </Routes>
       </div>
     </Router>
