@@ -1,56 +1,73 @@
-import React, { useState } from 'react'; 
-import { Link, NavLink } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
-function Navbar({ onSearch }) { 
-  const [searchTerm, setSearchTerm] = useState('');
+function Navbar({ onSearch }) {
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const handleSearchChange = (e) => { 
-    setSearchTerm(e.target.value); 
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
   };
 
-  const handleSearchClick = () => { 
-    onSearch(searchTerm); 
+  const handleSearchClick = () => {
+    onSearch(searchTerm);
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') { 
-      onSearch(searchTerm); 
+    if (e.key === "Enter") {
+      onSearch(searchTerm);
     }
   };
 
   return (
-    <nav className="navbar">
-      <div className="navbar-left">
-        <ul>
-          <li><Link to="/">Home</Link></li>
-          <li><NavLink to="/add-job">Add Job</NavLink></li>
-          <li><Link to="/about">About</Link></li>
-        </ul>
-      </div>
-      <div className="navbar-right">
-        <div className="search-container">
-          <div className='input'>
+    <>
+      {/* Set Body Background Color */}
+      <style>{`body { background-color: whitesmoke; }`}</style>
+
+      {/* Navbar */}
+      <nav className="flex justify-between items-center px-8 py-4 bg-white fixed top-0 w-full z-50 h-[12vh] shadow-md">
+        {/* Left: Navigation Links */}
+        <div className="navbar-left">
+          <ul className="flex list-none p-0 m-0">
+            <li className="mr-6">
+              <Link to="/" className="text-black text-lg font-bold no-underline">
+                JobFinder
+              </Link>
+            </li>
+            <li className="mr-6">
+              <Link to="/add-job" className="text-black text-lg font-bold no-underline">
+                Add Job
+              </Link>
+            </li>
+            <li className="mr-6">
+              <Link to="/about" className="text-black text-lg font-bold no-underline">
+                About
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        {/* Right: Search Bar */}
+        <div className="navbar-right ml-auto flex items-center">
+          <div className="flex items-center gap-8">
             <input
               type="text"
-              placeholder="Search for Job..."
-              className="search-input"
+              placeholder="Search for jobs..."
+              className="px-3 py-2 border-2 border-gray-800 rounded-l-md w-72 outline-none focus:ring-2 focus:ring-green-400"
               value={searchTerm}
               onChange={handleSearchChange}
               onKeyPress={handleKeyPress}
             />
-          </div>
-          <div className='submit'>
             <button
-              type="button" 
-              className="search-button"
-              onClick={handleSearchClick} 
+              type="button"
+              className="px-4 py-2 bg-green-600 text-white rounded-r-md font-bold transition-all duration-300 hover:bg-green-400"
+              onClick={handleSearchClick}
             >
               Search
             </button>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 }
 

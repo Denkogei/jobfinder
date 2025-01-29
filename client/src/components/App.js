@@ -16,7 +16,7 @@ function App() {
 
   return (
     <Router>
-      <div>
+          <div className="pt-[13vh]"> {/* Same as navbar height (12vh) */}
         <Navbar onSearch={handleSearch} />
         <Routes>
           <Route path="/" element={<Home searchTerm={searchTerm} />} />
