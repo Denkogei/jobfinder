@@ -51,7 +51,7 @@ function Home() {
           jobs.map((job) => (
             <div
               key={job.id}
-              className="job-card bg-white shadow-lg p-8 rounded-lg mx-2 my-0 w-[350px] h-[400px] flex flex-col justify-between"
+              className="job-card bg-white shadow-lg p-8 rounded-lg mx-2 my-0 w-[350px] h-[500px] flex flex-col justify-between"
             >
               <div className="mb-4">
                 <h3 className="text-xl font-semibold mb-3">{job.title}</h3>

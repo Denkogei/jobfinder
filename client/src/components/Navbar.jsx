@@ -38,6 +38,11 @@ function Navbar({ onSearch }) {
               </Link>
             </li>
             <li className="mr-6">
+              <Link to="/add-company" className="text-black text-lg font-bold no-underline">
+                Add Company
+              </Link>
+            </li>
+            <li className="mr-6">
               <Link to="/about" className="text-black text-lg font-bold no-underline">
                 About
               </Link>

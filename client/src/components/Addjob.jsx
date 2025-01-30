@@ -1,50 +1,117 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import { useNavigate } from "react-router-dom"; 
 
-function AddJob() {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [company_id, setCompanyId] = useState('');
+const AddJob = () => {
+  const [companies, setCompanies] = useState([]);
+  const [successMessage, setSuccessMessage] = useState(null);  
+  const [redirecting, setRedirecting] = useState(false);
+  const navigate = useNavigate(); 
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const jobData = { title, description, company_id };
+  useEffect(() => {
+    fetch("http://localhost:5000/companies")
+      .then((response) => response.json())
+      .then((data) => setCompanies(data))
+      .catch((error) => console.error("Error fetching companies:", error));
+  }, []);
 
-    fetch('http://localhost:5000/api/jobs', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(jobData),
+  const validationSchema = Yup.object({
+    title: Yup.string().required("Job title is required"),
+    description: Yup.string().required("Job description is required"),
+    company_id: Yup.string().required("Please select a company"),
+  });
+
+  const handleSubmit = (values, { setSubmitting, resetForm }) => {
+    fetch("http://localhost:5000/jobs", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
     })
       .then((response) => response.json())
-      .then((data) => {
-        alert('Job added successfully!');
+      .then(() => {
+        setSuccessMessage("Job added successfully!");  
+        resetForm();
+        setSubmitting(false);
+
+        
+        setRedirecting(true);
+        setTimeout(() => {
+          navigate("/");  
+        }, 1000);
       })
       .catch((error) => {
-        console.error('Error adding job:', error);
+        console.error("Error adding job:", error);
+        setSubmitting(false);
       });
   };
 
   return (
-    <div>
-      <h1>Add New Job</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Job Title</label>
-          <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
-        </div>
-        <div>
-          <label>Job Description</label>
-          <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
-        </div>
-        <div>
-          <label>Company ID</label>
-          <input type="text" value={company_id} onChange={(e) => setCompanyId(e.target.value)} />
-        </div>
-        <button type="submit">Add Job</button>
-      </form>
+    <div className="container mx-auto max-w-lg p-6 bg-white shadow-lg rounded-lg">
+      <h1 className="text-2xl font-bold text-center mb-6">Add New Job</h1>
+
+      {successMessage && <div className="text-green-500 text-center mb-4">{successMessage}</div>}
+
+      <Formik
+        initialValues={{ title: "", description: "", company_id: "" }}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit} 
+      >
+        {({ isSubmitting }) => (
+          <Form>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-medium mb-2">Job Title</label>
+              <Field
+                type="text"
+                name="title"
+                className="w-full px-4 py-2 border-2 border-gray-300 rounded-md focus:ring-2 focus:ring-green-500"
+              />
+              <ErrorMessage name="title" component="div" className="text-red-500 text-sm" />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-medium mb-2">Job Description</label>
+              <Field
+                as="textarea"
+                name="description"
+                className="w-full px-4 py-2 border-2 border-gray-300 rounded-md focus:ring-2 focus:ring-green-500"
+              />
+              <ErrorMessage name="description" component="div" className="text-red-500 text-sm" />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-medium mb-2">Company</label>
+              <Field
+                as="select"
+                name="company_id"
+                className="w-full px-4 py-2 border-2 border-gray-300 rounded-md focus:ring-2 focus:ring-green-500"
+              >
+                <option value="">{companies.length === 0 ? "Loading..." : "Select a Company"}</option>
+                {companies.map((company) => (
+                  <option key={company.id} value={company.id}>
+                    {company.name}
+                  </option>
+                ))}
+              </Field>
+              <ErrorMessage name="company_id" component="div" className="text-red-500 text-sm" />
+            </div>
+
+            <div className="text-center">
+              <button
+                type="submit"
+                className="bg-green-600 text-white py-2 px-6 rounded-md transition duration-300 hover:bg-green-400"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Adding..." : "Add Job"}
+              </button>
+            </div>
+          </Form>
+        )}
+      </Formik>
+
+      {redirecting && <div className="text-center text-gray-600 mt-4">Redirecting to homepage...</div>}
     </div>
   );
-}
+};
 
 export default AddJob;

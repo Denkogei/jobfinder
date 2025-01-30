@@ -5,6 +5,7 @@ import About from '../components/About';
 import Addjob from '../components/Addjob';
 import Home from '../components/Home';
 import JobDetails from './JobDetails';
+import Addcompany from '../components/Addcompany';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home searchTerm={searchTerm} />} />
           <Route path="/add-job" element={<Addjob />} />
+          <Route path="/add-company" element={<Addcompany />} />
           <Route path="/about" element={<About />} />
           <Route path="/job/:id" element={<JobDetails />} /> 
         </Routes>
