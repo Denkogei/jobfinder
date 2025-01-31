@@ -9,9 +9,9 @@ const UpdateJob = () => {
   const [loading, setLoading] = useState(true);
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
-  const { id } = useParams(); // Get job ID from URL
+  const { id } = useParams(); 
 
-  // Fetch job details and company list
+  
   useEffect(() => {
     const fetchJob = async () => {
       try {
@@ -33,25 +33,25 @@ const UpdateJob = () => {
     fetchJob();
   }, [id]);
 
-  // Validation Schema
+  
   const validationSchema = Yup.object().shape({
     title: Yup.string().required("Job title is required"),
     description: Yup.string().required("Job description is required"),
     company_id: Yup.string().required("Please select a company"),
   });
 
-  // Form Submission
+  
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       const response = await fetch(`http://localhost:5000/jobs/${id}`, {
-        method: "PATCH",  // Changed from PUT to PATCH
+        method: "PATCH", 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
       });
 
       if (response.ok) {
-        setSuccessMessage("Job updated successfully!"); // Success message
-        setTimeout(() => navigate("/"), 1000); // Redirect after 1 second
+        setSuccessMessage("Job updated successfully!");
+        setTimeout(() => navigate("/"), 1000); 
       } else {
         console.error("Failed to update job");
       }
@@ -82,7 +82,7 @@ const UpdateJob = () => {
       >
         {({ isSubmitting }) => (
           <Form>
-            {/* Job Title */}
+            
             <div className="mb-6">
               <label className="block text-sm font-medium text-gray-700">Job Title</label>
               <Field
@@ -93,7 +93,7 @@ const UpdateJob = () => {
               <ErrorMessage name="title" component="div" className="text-red-500 text-sm mt-1" />
             </div>
 
-            {/* Job Description */}
+           
             <div className="mb-6">
               <label className="block text-sm font-medium text-gray-700">Job Description</label>
               <Field
@@ -104,7 +104,7 @@ const UpdateJob = () => {
               <ErrorMessage name="description" component="div" className="text-red-500 text-sm mt-1" />
             </div>
 
-            {/* Company Selection */}
+           
             <div className="mb-6">
               <label className="block text-sm font-medium text-gray-700">Company</label>
               <Field
@@ -122,7 +122,7 @@ const UpdateJob = () => {
               <ErrorMessage name="company_id" component="div" className="text-red-500 text-sm mt-1" />
             </div>
 
-            {/* Submit Button */}
+           
             <div className="text-center">
               <button
                 type="submit"

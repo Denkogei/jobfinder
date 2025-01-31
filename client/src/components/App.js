@@ -8,6 +8,7 @@ import JobDetails from './JobDetails';
 import Addcompany from '../components/Addcompany';
 import UpdatJob from './UpdateJob';
 
+
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
 

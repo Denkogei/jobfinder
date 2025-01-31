@@ -128,7 +128,7 @@ class UserResource(Resource):
         return make_response(jsonify({"message": "User deleted"}), 200)
 
 
-# Job Application Resource
+
 class JobApplicationResource(Resource):
     def get(self, user_id=None, job_id=None):
         if user_id and job_id:
@@ -161,13 +161,13 @@ class JobApplicationResource(Resource):
         return make_response(jsonify({"message": "Job application deleted"}), 200)
 
 
-# Home Route
+
 class HomeResource(Resource):
     def get(self):
         return make_response("Welcome to JobFinder API!", 200)
 
 
-# Add Resources to the API
+
 api.add_resource(HomeResource, '/')
 api.add_resource(CompanyResource, '/companies', '/companies/<int:company_id>')
 api.add_resource(JobResource, '/jobs', '/jobs/<int:job_id>')
@@ -175,7 +175,7 @@ api.add_resource(UserResource, '/users', '/users/<int:user_id>')
 api.add_resource(JobApplicationResource, '/applications', '/applications/<int:user_id>/<int:job_id>')
 
 
-# Run the app
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()

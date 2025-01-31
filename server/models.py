@@ -5,11 +5,11 @@ db = SQLAlchemy()
 
 class Company(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False, unique=True)  # Added unique constraint
+    name = db.Column(db.String(100), nullable=False, unique=True)  
     location = db.Column(db.String(100), nullable=False)
     industry = db.Column(db.String(100), nullable=False)
 
-    # Relationship with cascade deletion
+   
     jobs = db.relationship('Job', back_populates='company', cascade="all, delete", lazy=True)
 
     def serialize(self):
@@ -25,10 +25,10 @@ class Job(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(200), nullable=False)
-    company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete='CASCADE'), nullable=False, index=True)  # Added index
-    posted_date = db.Column(db.Date, nullable=False, default=date.today)  # Default value for date
+    company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete='CASCADE'), nullable=False, index=True)  
+    posted_date = db.Column(db.Date, nullable=False, default=date.today) 
 
-    # Relationships
+   
     company = db.relationship('Company', back_populates='jobs')
     job_applications = db.relationship('JobApplicationJoin', back_populates='job', cascade="all, delete", lazy=True)
 
@@ -44,10 +44,10 @@ class Job(db.Model):
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), nullable=False, unique=True)  # Changed from 'name' to 'username'
-    email = db.Column(db.String(100), nullable=False, unique=True)  # Added unique constraint
+    username = db.Column(db.String(100), nullable=False, unique=True)  
+    email = db.Column(db.String(100), nullable=False, unique=True) 
 
-    # Relationship with cascade deletion
+   
     job_applications = db.relationship('JobApplicationJoin', back_populates='user', cascade="all, delete", lazy=True)
 
     def serialize(self):
@@ -60,11 +60,11 @@ class User(db.Model):
 
 class JobApplicationJoin(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False, index=True)  # Added index
-    job_id = db.Column(db.Integer, db.ForeignKey('job.id', ondelete='CASCADE'), nullable=False, index=True)  # Added index
-    application_date = db.Column(db.Date, nullable=False, default=date.today)  # Default value for date
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False, index=True) 
+    job_id = db.Column(db.Integer, db.ForeignKey('job.id', ondelete='CASCADE'), nullable=False, index=True) 
+    application_date = db.Column(db.Date, nullable=False, default=date.today)  
 
-    # Relationships
+   
     user = db.relationship('User', back_populates='job_applications')
     job = db.relationship('Job', back_populates='job_applications')
 

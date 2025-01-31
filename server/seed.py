@@ -1,12 +1,12 @@
-#!/usr/bin/env python3
 
-# Standard library imports
+
+
 from random import randint, sample
 
-# Remote library imports
+
 from faker import Faker
 
-# Local imports
+
 from app import app
 from models import db, Company, Job, User, JobApplicationJoin
 
@@ -15,13 +15,13 @@ if __name__ == '__main__':
     with app.app_context():
         print("Starting seed...")
 
-        # Clear existing data
+        
         JobApplicationJoin.query.delete()
         Job.query.delete()
         User.query.delete()
         Company.query.delete()
 
-        # Seed companies
+        
         companies = []
         for _ in range(5):
             company = Company(
@@ -34,7 +34,7 @@ if __name__ == '__main__':
 
         db.session.commit()
 
-        # Seed jobs
+        
         jobs = []
         for _ in range(10):
             job = Job(
@@ -48,11 +48,11 @@ if __name__ == '__main__':
 
         db.session.commit()
 
-        # Seed users
+        
         users = []
         for _ in range(10):
             user = User(
-                username=fake.name(),  # Changed 'name' to 'username'
+                username=fake.name(), 
                 email=fake.email()
             )
             users.append(user)
@@ -60,9 +60,9 @@ if __name__ == '__main__':
 
         db.session.commit()
 
-        # Seed job applications
+        
         for user in users:
-            applied_jobs = sample(jobs, randint(1, 3))  # Each user applies to 1-3 random jobs
+            applied_jobs = sample(jobs, randint(1, 3)) 
             for job in applied_jobs:
                 application = JobApplicationJoin(
                     user_id=user.id,
