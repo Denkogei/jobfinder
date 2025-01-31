@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 function JobDetails() {
   const { id } = useParams();
+  const navigate = useNavigate(); // Hook for navigation
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [applied, setApplied] = useState(false); // State to track if the user has applied
 
   useEffect(() => {
     const fetchJobDetails = async () => {
@@ -38,7 +40,14 @@ function JobDetails() {
   }
 
   const handleApply = (values) => {
+    // Set the applied state to true after the form is submitted
+    setApplied(true);
     alert(`You have applied for the job!\nName: ${values.name}\nEmail: ${values.email}`);
+
+    // Redirect after 1 second
+    setTimeout(() => {
+      navigate('/'); // Redirect to home page
+    }, 1000);
   };
 
   const validationSchema = Yup.object({
@@ -47,44 +56,53 @@ function JobDetails() {
   });
 
   return (
-    <div className="container p-4 mx-auto">
+    <div className="container p-6 mx-auto">
       {job && (
-        <>
-          <h1 className="text-2xl font-bold text-center mb-4">{job.title}</h1>
-          <p className="text-lg text-center text-gray-700 mb-2">{job.company}</p>
-          <p className="text-gray-600 text-center mb-2">{job.location}</p>
-          <p className="text-gray-500 text-center mb-4">{job.description}</p>
+        <div className="max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-6">
+          <h1 className="text-3xl font-bold text-center text-gray-800 mb-4">{job.title}</h1>
+          <div className="text-center mb-6">
+            <p className="text-lg font-medium text-gray-700">{job.company}</p>
+            <p className="text-gray-600">{job.location}</p>
+          </div>
+          <p className="text-gray-700 text-lg leading-relaxed mb-6">{job.description}</p>
 
-          <div className="application-form bg-white shadow-md rounded-lg p-4 max-w-sm mx-auto">
-            <h3 className="text-xl font-semibold mb-4 text-center">Apply for this job</h3>
+          {/* Show confirmation message if applied */}
+          {applied && (
+            <div className="text-center text-green-500 mb-4">
+              <p className="font-semibold">You have successfully applied for this job!</p>
+            </div>
+          )}
+
+          <div className="application-form bg-gray-50 shadow-md rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-center mb-4 text-gray-800">Apply for this job</h3>
             <Formik
               initialValues={{ name: '', email: '' }}
               validationSchema={validationSchema}
               onSubmit={handleApply}
             >
               <Form>
-                <div className="mb-3">
+                <div className="mb-4">
                   <label className="block text-gray-700 text-sm font-medium mb-2">Your Name</label>
                   <Field
                     type="text"
                     name="name"
-                    className="w-full px-3 py-2 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="w-full px-4 py-2 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                   />
-                  <ErrorMessage name="name" component="div" className="text-red-500 text-sm" />
+                  <ErrorMessage name="name" component="div" className="text-red-500 text-sm mt-1" />
                 </div>
-                <div className="mb-3">
+                <div className="mb-4">
                   <label className="block text-gray-700 text-sm font-medium mb-2">Your Email</label>
                   <Field
                     type="email"
                     name="email"
-                    className="w-full px-3 py-2 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="w-full px-4 py-2 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                   />
-                  <ErrorMessage name="email" component="div" className="text-red-500 text-sm" />
+                  <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
                 </div>
                 <div className="text-center">
                   <button
                     type="submit"
-                    className="bg-green-600 text-white py-2 px-5 rounded-md transition duration-300 hover:bg-green-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="bg-green-600 text-white py-2 px-6 rounded-md transition duration-300 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-500"
                   >
                     Apply Now
                   </button>
@@ -92,7 +110,7 @@ function JobDetails() {
               </Form>
             </Formik>
           </div>
-        </>
+        </div>
       )}
     </div>
   );

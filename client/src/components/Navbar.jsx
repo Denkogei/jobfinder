@@ -20,10 +20,8 @@ function Navbar({ onSearch }) {
 
   return (
     <>
-      
       <style>{`body { background-color: whitesmoke; }`}</style>
 
-     
       <nav className="flex justify-between items-center px-8 py-4 bg-white fixed top-0 w-full z-50 h-[12vh] shadow-md">
         <div className="navbar-left">
           <ul className="flex list-none p-0 m-0">
