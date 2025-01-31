@@ -5,6 +5,7 @@ from flask_restful import Api, Resource
 from models import db, Company, Job, User, JobApplicationJoin
 from datetime import date
 
+
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///jobfinder.db'
