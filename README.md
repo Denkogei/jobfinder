@@ -33,7 +33,7 @@ The application provides a user-friendly interface, allowing seamless navigation
 
 ### View Live Site
 
-Visit the deployed application at: [JobFinder](<LIVE_FRONTEND_URL>)
+Visit the deployed application at: [JobFinder](<https://jobfinderbydennis.netlify.app/>)
 
 ### Live API
 
