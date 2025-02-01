@@ -10,6 +10,7 @@ function About() {
         <span className="text-green-600 font-medium"> employers</span>. You can browse, apply, and 
         post jobs easily.
       </p>
+      {/* comment */}
     </div>
   );
 }
