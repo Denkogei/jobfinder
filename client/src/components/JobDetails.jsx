@@ -5,16 +5,16 @@ import * as Yup from 'yup';
 
 function JobDetails() {
   const { id } = useParams();
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate();
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [applied, setApplied] = useState(false); // State to track if the user has applied
+  const [applied, setApplied] = useState(false); 
 
   useEffect(() => {
     const fetchJobDetails = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/jobs/${id}`);
+        const response = await fetch(`https://jobfinder-g4vi.onrender.com/jobs/${id}`);
         if (!response.ok) {
           throw new Error('Failed to fetch job details');
         }
@@ -40,13 +40,13 @@ function JobDetails() {
   }
 
   const handleApply = (values) => {
-    // Set the applied state to true after the form is submitted
+   
     setApplied(true);
     alert(`You have applied for the job!\nName: ${values.name}\nEmail: ${values.email}`);
 
-    // Redirect after 1 second
+   
     setTimeout(() => {
-      navigate('/'); // Redirect to home page
+      navigate('/');
     }, 1000);
   };
 
@@ -66,7 +66,7 @@ function JobDetails() {
           </div>
           <p className="text-gray-700 text-lg leading-relaxed mb-6">{job.description}</p>
 
-          {/* Show confirmation message if applied */}
+          
           {applied && (
             <div className="text-center text-green-500 mb-4">
               <p className="font-semibold">You have successfully applied for this job!</p>

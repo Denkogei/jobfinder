@@ -15,11 +15,11 @@ const UpdateJob = () => {
   useEffect(() => {
     const fetchJob = async () => {
       try {
-        const jobResponse = await fetch(`http://localhost:5000/jobs/${id}`);
+        const jobResponse = await fetch(`https://jobfinder-g4vi.onrender.com/jobs/${id}`);
         const jobData = await jobResponse.json();
         setJob(jobData);
 
-        const companyResponse = await fetch("http://localhost:5000/companies");
+        const companyResponse = await fetch("https://jobfinder-g4vi.onrender.com/companies");
         const companyData = await companyResponse.json();
         setCompanies(companyData);
 
@@ -43,7 +43,7 @@ const UpdateJob = () => {
   
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const response = await fetch(`http://localhost:5000/jobs/${id}`, {
+      const response = await fetch(`https://jobfinder-g4vi.onrender.com/jobs/${id}`, {
         method: "PATCH", 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),

@@ -1,29 +1,48 @@
 import { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 
 const AddJob = () => {
-  const [companies, setCompanies] = useState([]);
+  const [companies, setCompanies] = useState([]); 
+  const [loading, setLoading] = useState(true);  
   const [successMessage, setSuccessMessage] = useState(null);  
   const [redirecting, setRedirecting] = useState(false);
   const navigate = useNavigate(); 
 
+ 
   useEffect(() => {
-    fetch("http://localhost:5000/companies")
+    fetch("https://jobfinder-g4vi.onrender.com/companies")
       .then((response) => response.json())
-      .then((data) => setCompanies(data))
-      .catch((error) => console.error("Error fetching companies:", error));
-  }, []);
+      .then((data) => {
+        console.log("Fetched companies data:", data);  
+        
+        if (Array.isArray(data)) {
+          setCompanies(data);
+        } else {
+          console.error("Error: data fetched is not an array", data);
+          setCompanies([]);  
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching companies:", error);
+        setCompanies([]);
+      })
+      .finally(() => {
+        setLoading(false);  
+      });
+  }, []);  
 
+ 
   const validationSchema = Yup.object({
     title: Yup.string().required("Job title is required"),
     description: Yup.string().required("Job description is required"),
     company_id: Yup.string().required("Please select a company"),
   });
 
+  // Handle form submission
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
-    fetch("http://localhost:5000/jobs", {
+    fetch("https://jobfinder-g4vi.onrender.com/jobs", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
@@ -34,7 +53,6 @@ const AddJob = () => {
         resetForm();
         setSubmitting(false);
 
-        
         setRedirecting(true);
         setTimeout(() => {
           navigate("/");  
@@ -55,10 +73,11 @@ const AddJob = () => {
       <Formik
         initialValues={{ title: "", description: "", company_id: "" }}
         validationSchema={validationSchema}
-        onSubmit={handleSubmit} 
+        onSubmit={handleSubmit}
       >
         {({ isSubmitting }) => (
           <Form>
+           
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-medium mb-2">Job Title</label>
               <Field
@@ -69,6 +88,7 @@ const AddJob = () => {
               <ErrorMessage name="title" component="div" className="text-red-500 text-sm" />
             </div>
 
+          
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-medium mb-2">Job Description</label>
               <Field
@@ -79,6 +99,7 @@ const AddJob = () => {
               <ErrorMessage name="description" component="div" className="text-red-500 text-sm" />
             </div>
 
+           
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-medium mb-2">Company</label>
               <Field
@@ -86,21 +107,27 @@ const AddJob = () => {
                 name="company_id"
                 className="w-full px-4 py-2 border-2 border-gray-300 rounded-md focus:ring-2 focus:ring-green-500"
               >
-                <option value="">{companies.length === 0 ? "Loading..." : "Select a Company"}</option>
-                {companies.map((company) => (
-                  <option key={company.id} value={company.id}>
-                    {company.name}
-                  </option>
-                ))}
+                {loading ? (
+                  <option>Loading...</option>  
+                ) : companies.length === 0 ? (
+                  <option>No companies available</option>  
+                ) : (
+                  companies.map((company) => (
+                    <option key={company.id} value={company.id}>
+                      {company.name}
+                    </option>
+                  ))
+                )}
               </Field>
               <ErrorMessage name="company_id" component="div" className="text-red-500 text-sm" />
             </div>
 
+           
             <div className="text-center">
               <button
                 type="submit"
                 className="bg-green-600 text-white py-2 px-6 rounded-md transition duration-300 hover:bg-green-400"
-                disabled={isSubmitting}
+                disabled={isSubmitting || companies.length === 0}  
               >
                 {isSubmitting ? "Adding..." : "Add Job"}
               </button>

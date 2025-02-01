@@ -11,13 +11,13 @@ function Home({ searchTerm }) {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:5000/jobs");
+        const response = await fetch("https://jobfinder-g4vi.onrender.com//jobs");
         if (!response.ok) {
           throw new Error("Failed to fetch jobs");
         }
         const data = await response.json();
         setJobs(data);
-        setFilteredJobs(data); // Initially set filtered jobs to all jobs
+        setFilteredJobs(data);
       } catch (err) {
         setError("Unable to load jobs at this time. Please try again later.");
         console.error("Error fetching jobs:", err);
@@ -36,7 +36,7 @@ function Home({ searchTerm }) {
       (job.location && job.location.toLowerCase().includes(searchTerm.toLowerCase()))
     );
     setFilteredJobs(filtered);
-  }, [searchTerm, jobs]); // Re-run when searchTerm or jobs change
+  }, [searchTerm, jobs]); 
 
   const handleApplyClick = (jobId) => {
     navigate(`/job/${jobId}`);
@@ -49,14 +49,14 @@ function Home({ searchTerm }) {
   const handleDeleteClick = async (jobId) => {
     if (window.confirm("Are you sure you want to delete this job?")) {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/jobs/${jobId}`, {
+        const response = await fetch(`https://jobfinder-g4vi.onrender.com/jobs/${jobId}`, {
           method: "DELETE",
         });
         if (!response.ok) {
           throw new Error("Failed to delete job");
         }
         setJobs((prevJobs) => prevJobs.filter((job) => job.id !== jobId));
-        setFilteredJobs((prevJobs) => prevJobs.filter((job) => job.id !== jobId)); // Update filtered jobs as well
+        setFilteredJobs((prevJobs) => prevJobs.filter((job) => job.id !== jobId)); 
       } catch (err) {
         console.error("Error deleting job:", err);
         alert("Failed to delete job. Please try again.");

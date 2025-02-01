@@ -8,7 +8,6 @@ const AddCompany = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const navigate = useNavigate();
 
-  // **Validation Schema**
   const validationSchema = Yup.object({
     name: Yup.string().required("Company name is required"),
     location: Yup.string().required("Location is required"),
@@ -16,18 +15,18 @@ const AddCompany = () => {
   });
 
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
-    fetch("http://localhost:5000/companies", {
+    fetch("https://jobfinder-g4vi.onrender.com/companies", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     })
       .then((response) => response.json())
-      .then(() => {
+      .then((data) => {
         setSuccessMessage("Company added successfully!");
         setSubmitting(false);
         resetForm();
         
-        // Redirect after 1 second
+      
         setTimeout(() => {
           navigate("/");
         }, 1000);
