@@ -33,7 +33,7 @@ function Home({ searchTerm }) {
     const filtered = jobs.filter((job) =>
       (job.title && job.title.toLowerCase().includes(searchTerm.toLowerCase())) ||
       (job.company && job.company.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (job.location && job.location.toLowerCase().includes(searchTerm.toLowerCase()))
+      (job.location && job.location.toLowerCase().includes(searchTerm.toLowercase()))
     );
     setFilteredJobs(filtered);
   }, [searchTerm, jobs]);
@@ -93,7 +93,7 @@ function Home({ searchTerm }) {
             filteredJobs.map((job) => (
               <div
                 key={job.id}
-                className="job-card bg-white shadow-lg p-6 rounded-lg mx-2 my-4 w-full max-w-[380px] h-[500px] flex flex-col justify-between"
+                className="job-card bg-white shadow-lg p-6 rounded-lg mx-2 my-4 w-full max-w-[380px] h-[500px] flex flex-col justify-between transition-all transform hover:scale-105 hover:shadow-xl hover:shadow-green-500/30"
               >
                 <div className="mb-4">
                   <h3 className="text-xl font-semibold mb-3">{job.title}</h3>
