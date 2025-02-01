@@ -86,14 +86,14 @@ function Home({ searchTerm }) {
       <p className="text-center mb-8">Explore and apply for jobs.</p>
 
       <div className="card p-8 mx-4 mb-12">
-        <div className="job-list grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12">
+        <div className="job-list grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filteredJobs.length === 0 ? (
             <p className="text-center text-gray-600">No jobs available at the moment.</p>
           ) : (
             filteredJobs.map((job) => (
               <div
                 key={job.id}
-                className="job-card bg-white shadow-lg p-6 rounded-lg mx-2 my-4 w-full max-w-[350px] h-[500px] flex flex-col justify-between"
+                className="job-card bg-white shadow-lg p-6 rounded-lg mx-2 my-4 w-full max-w-[330px] h-[450px] flex flex-col justify-between"
               >
                 <div className="mb-4">
                   <h3 className="text-xl font-semibold mb-3">{job.title}</h3>
