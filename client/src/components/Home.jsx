@@ -36,7 +36,7 @@ function Home({ searchTerm }) {
       (job.location && job.location.toLowerCase().includes(searchTerm.toLowerCase()))
     );
     setFilteredJobs(filtered);
-  }, [searchTerm, jobs]); 
+  }, [searchTerm, jobs]);
 
   const handleApplyClick = (jobId) => {
     navigate(`/job/${jobId}`);
@@ -56,7 +56,7 @@ function Home({ searchTerm }) {
           throw new Error("Failed to delete job");
         }
         setJobs((prevJobs) => prevJobs.filter((job) => job.id !== jobId));
-        setFilteredJobs((prevJobs) => prevJobs.filter((job) => job.id !== jobId)); 
+        setFilteredJobs((prevJobs) => prevJobs.filter((job) => job.id !== jobId));
       } catch (err) {
         console.error("Error deleting job:", err);
         alert("Failed to delete job. Please try again.");
@@ -86,7 +86,7 @@ function Home({ searchTerm }) {
       <p className="text-center mb-8">Explore and apply for jobs.</p>
 
       <div className="card p-8 mx-4 mb-12">
-        <div className="job-list grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+        <div className="job-list grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12">
           {filteredJobs.length === 0 ? (
             <p className="text-center text-gray-600">No jobs available at the moment.</p>
           ) : (
@@ -104,21 +104,21 @@ function Home({ searchTerm }) {
 
                 <div className="mt-auto flex gap-2">
                   <button
-                    className="bg-green-600 text-white py-2 px-4 rounded-md transition duration-300 hover:bg-green-400"
+                    className="bg-green-600 text-white py-3 px-6 rounded-md transition duration-300 hover:bg-green-400 w-full"
                     onClick={() => handleApplyClick(job.id)}
                   >
                     Apply Now
                   </button>
 
                   <button
-                    className="bg-blue-600 text-white py-2 px-4 rounded-md transition duration-300 hover:bg-blue-400"
+                    className="bg-blue-600 text-white py-3 px-6 rounded-md transition duration-300 hover:bg-blue-400 w-full"
                     onClick={() => handleUpdateClick(job.id)}
                   >
                     Update
                   </button>
 
                   <button
-                    className="bg-red-600 text-white py-2 px-4 rounded-md transition duration-300 hover:bg-red-400"
+                    className="bg-red-600 text-white py-3 px-6 rounded-md transition duration-300 hover:bg-red-400 w-full"
                     onClick={() => handleDeleteClick(job.id)}
                   >
                     Delete
