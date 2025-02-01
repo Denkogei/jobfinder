@@ -33,7 +33,7 @@ function Home({ searchTerm }) {
     const filtered = jobs.filter((job) =>
       (job.title && job.title.toLowerCase().includes(searchTerm.toLowerCase())) ||
       (job.company && job.company.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (job.location && job.location.toLowerCase().includes(searchTerm.toLowercase()))
+      (job.location && job.location.toLowerCase().includes(searchTerm.toLowerCase()))
     );
     setFilteredJobs(filtered);
   }, [searchTerm, jobs]);
@@ -93,7 +93,7 @@ function Home({ searchTerm }) {
             filteredJobs.map((job) => (
               <div
                 key={job.id}
-                className="job-card bg-white shadow-lg p-6 rounded-lg mx-2 my-4 w-full max-w-[380px] h-[500px] flex flex-col justify-between transition-all transform hover:scale-105 hover:shadow-xl hover:shadow-green-500/30"
+                className="job-card bg-white shadow-lg p-4 rounded-lg mx-2 my-4 w-full max-w-[380px] h-[400px] flex flex-col justify-between transition-all transform hover:scale-105 hover:shadow-xl hover:shadow-green-500/30"
               >
                 <div className="mb-4">
                   <h3 className="text-xl font-semibold mb-3">{job.title}</h3>
@@ -104,21 +104,21 @@ function Home({ searchTerm }) {
 
                 <div className="mt-auto flex gap-3 justify-between">
                   <button
-                    className="bg-green-600 text-white py-2 px-4 rounded-md transition duration-300 hover:bg-green-400 w-[30%]"
+                    className="bg-green-600 text-white py-2 px-3 rounded-md transition duration-300 hover:bg-green-400 w-[30%] text-center"
                     onClick={() => handleApplyClick(job.id)}
                   >
                     Apply Now
                   </button>
 
                   <button
-                    className="bg-blue-600 text-white py-2 px-4 rounded-md transition duration-300 hover:bg-blue-400 w-[30%]"
+                    className="bg-blue-600 text-white py-2 px-3 rounded-md transition duration-300 hover:bg-blue-400 w-[30%] text-center"
                     onClick={() => handleUpdateClick(job.id)}
                   >
                     Update
                   </button>
 
                   <button
-                    className="bg-red-600 text-white py-2 px-4 rounded-md transition duration-300 hover:bg-red-400 w-[30%]"
+                    className="bg-red-600 text-white py-2 px-3 rounded-md transition duration-300 hover:bg-red-400 w-[30%] text-center"
                     onClick={() => handleDeleteClick(job.id)}
                   >
                     Delete
