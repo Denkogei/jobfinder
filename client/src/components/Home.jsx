@@ -6,6 +6,7 @@ function Home({ searchTerm }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filteredJobs, setFilteredJobs] = useState([]);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -82,8 +83,38 @@ function Home({ searchTerm }) {
 
   return (
     <div className="container p-4 mx-auto h-screen">
-      <h1 className="text-center text-2xl font-bold mb-6">Job Finder</h1>
-      <p className="text-center mb-8">Explore and apply for jobs.</p>
+      <header className="relative">
+        <div className="flex justify-between items-center py-4">
+          <div className="text-2xl font-bold">Job Finder</div>
+
+          <div className="block lg:hidden">
+            <button
+              className="text-3xl"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              &#9776;
+            </button>
+          </div>
+        </div>
+
+        {isMenuOpen && (
+          <div className="absolute left-0 top-0 w-full bg-white shadow-md p-4 z-10">
+            <ul className="space-y-4 text-center">
+              <li><a href="#">Home</a></li>
+              <li><a href="#">About</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </div>
+        )}
+      </header>
+
+      <div className="mb-6">
+        <input
+          type="text"
+          className="w-full p-3 border rounded-md"
+          placeholder="Search jobs..."
+        />
+      </div>
 
       <div className="card p-8 mx-4 mb-12">
         <div className="job-list grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -102,23 +133,23 @@ function Home({ searchTerm }) {
                 </div>
                 <p className="text-gray-500 mb-4 flex-1">{job.description}</p>
 
-                <div className="mt-auto flex flex-col gap-2">
+                <div className="mt-auto flex flex-row gap-4">
                   <button
-                    className="bg-green-600 text-white py-3 px-6 rounded-md transition duration-300 hover:bg-green-400 w-full"
+                    className="bg-green-600 text-white py-3 px-6 rounded-md transition duration-300 hover:bg-green-400 w-full sm:w-auto"
                     onClick={() => handleApplyClick(job.id)}
                   >
                     Apply Now
                   </button>
 
                   <button
-                    className="bg-blue-600 text-white py-3 px-6 rounded-md transition duration-300 hover:bg-blue-400 w-full"
+                    className="bg-blue-600 text-white py-3 px-6 rounded-md transition duration-300 hover:bg-blue-400 w-full sm:w-auto"
                     onClick={() => handleUpdateClick(job.id)}
                   >
                     Update
                   </button>
 
                   <button
-                    className="bg-red-600 text-white py-3 px-6 rounded-md transition duration-300 hover:bg-red-400 w-full"
+                    className="bg-red-600 text-white py-3 px-6 rounded-md transition duration-300 hover:bg-red-400 w-full sm:w-auto"
                     onClick={() => handleDeleteClick(job.id)}
                   >
                     Delete
