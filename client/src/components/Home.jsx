@@ -11,7 +11,7 @@ function Home({ searchTerm }) {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await fetch("https://jobfinder-g4vi.onrender.com//jobs");
+        const response = await fetch("https://jobfinder-g4vi.onrender.com/jobs");
         if (!response.ok) {
           throw new Error("Failed to fetch jobs");
         }
@@ -102,7 +102,7 @@ function Home({ searchTerm }) {
                 </div>
                 <p className="text-gray-500 mb-4 flex-1">{job.description}</p>
 
-                <div className="mt-auto flex gap-2">
+                <div className="mt-auto flex flex-col gap-2">
                   <button
                     className="bg-green-600 text-white py-3 px-6 rounded-md transition duration-300 hover:bg-green-400 w-full"
                     onClick={() => handleApplyClick(job.id)}
